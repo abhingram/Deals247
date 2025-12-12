@@ -36,7 +36,7 @@ const FilterSidebar = ({ show, onClose, onFilterChange }) => {
       />
 
       <aside
-        className={`fixed md:sticky top-0 left-0 h-screen md:h-auto w-80 bg-white p-6 overflow-y-auto z-50 transform transition-transform md:translate-x-0 md:block ${
+        className={`fixed md:sticky top-0 left-0 h-screen md:h-auto w-80 md:w-64 bg-white p-6 overflow-y-auto z-50 transform transition-transform md:translate-x-0 md:block flex-shrink-0 ${
           show ? 'translate-x-0' : '-translate-x-full'
         }`}
       >

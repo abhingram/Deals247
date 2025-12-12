@@ -141,127 +141,122 @@ const DealCard = ({ deal }) => {
   return (
     <>
       <motion.div
-        whileHover={{ y: -2 }}
-        className="deal-card bg-white border border-gray-200 rounded-lg p-3 shadow-sm hover:shadow-md transition-all cursor-pointer group relative flex"
+        whileHover={{ y: -4, shadow: "lg" }}
+        className="deal-card bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-all cursor-pointer group relative"
         onClick={handleCardClick}
       >
-        <div className="deal-content flex-1 pr-3">
-          <div className="deal-title text-sm font-semibold text-gray-800 leading-tight overflow-hidden" style={{
-            display: '-webkit-box',
-            WebkitLineClamp: 2,
-            WebkitBoxOrient: 'vertical'
-          }}>
-            {title}
+        {/* Image Section */}
+        <div className="deal-image-container relative w-full h-48 bg-gray-100">
+          <ImageWithFallback 
+            src={image || "https://images.unsplash.com/photo-1595872018818-97555653a011"}
+            alt={title}
+            className="w-full h-full object-cover"
+            fallbackClassName="bg-gray-200 text-gray-500"
+          />
+          
+          {/* Discount Badge */}
+          <div className="absolute top-3 left-3 bg-gradient-to-r from-green-500 to-green-600 text-white px-3 py-1.5 rounded-full shadow-lg">
+            <span className="text-base font-bold">↓{discount}%</span>
           </div>
 
-          <div className="deal-prices mt-1 flex items-center gap-2">
-            <span className="discount text-xs font-bold text-green-600">
-              ↓{discount}%
-            </span>
-            <span className="price text-base font-bold text-black">
+          {/* Action Buttons */}
+          <div className="absolute top-3 right-3 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                handleSave();
+              }}
+              disabled={loading}
+              className={`p-2 rounded-full shadow-lg backdrop-blur-sm transition-all ${
+                isFavorited
+                  ? 'bg-red-500 text-white hover:bg-red-600'
+                  : 'bg-white/90 text-gray-700 hover:bg-white'
+              }`}
+              title={isFavorited ? "Remove from favorites" : "Add to favorites"}
+            >
+              <Heart className={`h-4 w-4 ${isFavorited ? 'fill-current' : ''}`} />
+            </button>
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                handleShare();
+              }}
+              className="bg-white/90 p-2 rounded-full shadow-lg hover:bg-white backdrop-blur-sm transition-all"
+              title="Share this deal"
+            >
+              <Share2 className="h-4 w-4 text-gray-700" />
+            </button>
+          </div>
+
+          {/* Trust Badge */}
+          {verified && (
+            <div className="absolute bottom-3 left-3 flex items-center bg-green-500 text-white px-2.5 py-1 rounded-full shadow-md">
+              <CheckCircle className="h-3.5 w-3.5 mr-1" />
+              <span className="text-xs font-semibold">Verified</span>
+            </div>
+          )}
+        </div>
+
+        {/* Content Section */}
+        <div className="deal-content p-4">
+          {/* Title */}
+          <h3 className="deal-title text-base font-semibold text-gray-900 leading-snug mb-3 line-clamp-2 min-h-[3rem]">
+            {title}
+          </h3>
+
+          {/* Price Section */}
+          <div className="deal-prices mb-3 flex items-baseline gap-2">
+            <span className="price text-2xl font-bold text-gray-900">
               ${discountedPrice}
             </span>
-            <span className="old-price text-sm text-gray-500 line-through">
+            <span className="old-price text-base text-gray-400 line-through">
               ${originalPrice}
             </span>
           </div>
 
-          <div className="deal-meta mt-1.5 flex items-center gap-2 text-xs text-gray-500 flex-wrap">
-            {/* Trust Indicators */}
+          {/* Store and Rating */}
+          <div className="flex items-center justify-between mb-3 pb-3 border-b border-gray-100">
+            <div className="flex items-center gap-2">
+              <Award className="h-4 w-4 text-orange-500" />
+              <span className="text-sm font-medium text-gray-700">{store}</span>
+            </div>
+            
             <div className="flex items-center gap-1">
-              {verified ? (
-                <div className="flex items-center bg-green-50 text-green-700 px-1.5 py-0.5 rounded-full">
-                  <CheckCircle className="h-3 w-3 mr-1" />
-                  <span className="font-medium">Verified</span>
-                </div>
-              ) : (
-                <div className="flex items-center bg-yellow-50 text-yellow-700 px-1.5 py-0.5 rounded-full">
-                  <AlertTriangle className="h-3 w-3 mr-1" />
-                  <span className="font-medium">Unverified</span>
-                </div>
-              )}
-
-              {/* Store Trust Score */}
-              <div className="flex items-center bg-blue-50 text-blue-700 px-1.5 py-0.5 rounded-full">
-                <Shield className="h-3 w-3 mr-1" />
-                <span className="font-medium">98% Trust</span>
-              </div>
-            </div>
-
-            {/* Rating and Reviews */}
-            <div className="flex items-center gap-1">
-              <div className="flex items-center">
-                <Star className="h-3 w-3 fill-yellow-400 text-yellow-400 mr-1" />
-                <span className="font-medium">{rating}</span>
-              </div>
-              <span className="text-gray-400">({reviews.toLocaleString()})</span>
-            </div>
-
-            {/* Expiration */}
-            <div className="flex items-center">
-              <Clock className="h-3 w-3 mr-1" />
-              <span>{expiresIn}</span>
-            </div>
-
-            {/* Store Badge */}
-            <div className="ml-auto flex items-center gap-1">
-              <Award className="h-3 w-3 text-purple-500" />
-              <span className="font-medium text-gray-600 uppercase">{store}</span>
+              <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+              <span className="text-sm font-semibold text-gray-900">{rating}</span>
+              <span className="text-xs text-gray-500">({reviews.toLocaleString()})</span>
             </div>
           </div>
 
-          {/* Additional Trust Indicators */}
-          <div className="deal-trust mt-2 flex items-center justify-between text-xs">
-            <div className="flex items-center gap-3">
-              <div className="flex items-center text-green-600">
-                <ThumbsUp className="h-3 w-3 mr-1" />
-                <span>95% positive</span>
+          {/* Trust Indicators Row */}
+          <div className="flex items-center gap-2 mb-3 flex-wrap">
+            {!verified && (
+              <div className="flex items-center bg-yellow-50 text-yellow-700 px-2 py-1 rounded-md">
+                <AlertTriangle className="h-3 w-3 mr-1" />
+                <span className="text-xs font-medium">Unverified</span>
               </div>
-              <div className="flex items-center text-blue-600">
-                <ExternalLink className="h-3 w-3 mr-1" />
-                <span>Active link</span>
-              </div>
+            )}
+            <div className="flex items-center bg-blue-50 text-blue-700 px-2 py-1 rounded-md">
+              <Shield className="h-3 w-3 mr-1" />
+              <span className="text-xs font-medium">98% Trust</span>
             </div>
-            <div className="text-gray-400">
-              Updated 2h ago
+            <div className="flex items-center bg-green-50 text-green-700 px-2 py-1 rounded-md">
+              <ThumbsUp className="h-3 w-3 mr-1" />
+              <span className="text-xs font-medium">95%</span>
             </div>
           </div>
-        </div>
 
-        <div className="deal-image flex-shrink-0 w-24 h-full">
-          <ImageWithFallback 
-            src={image || "https://images.unsplash.com/photo-1595872018818-97555653a011"}
-            alt={title}
-            className="w-full h-full object-cover rounded-md"
-            fallbackClassName="bg-gray-200 text-gray-500 rounded-md"
-          />
-        </div>
-
-        {/* Hidden elements for functionality */}
-        <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              handleSave();
-            }}
-            disabled={loading}
-            className={`p-1.5 rounded-full shadow-sm transition-colors ${
-              isFavorited
-                ? 'bg-red-50 text-red-500 hover:bg-red-100'
-                : 'bg-white text-gray-700 hover:bg-gray-50'
-            }`}
-          >
-            <Heart className={`h-3 w-3 ${isFavorited ? 'fill-current' : ''}`} />
-          </button>
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              handleShare();
-            }}
-            className="bg-white p-1.5 rounded-full shadow-sm hover:bg-gray-50 transition-colors"
-          >
-            <Share2 className="h-3 w-3 text-gray-700" />
-          </button>
+          {/* Footer */}
+          <div className="flex items-center justify-between text-xs text-gray-500">
+            <div className="flex items-center gap-1">
+              <Clock className="h-3.5 w-3.5" />
+              <span className="font-medium">Expires: {expiresIn}</span>
+            </div>
+            <div className="flex items-center gap-1 text-blue-600">
+              <ExternalLink className="h-3.5 w-3.5" />
+              <span className="font-medium">Active</span>
+            </div>
+          </div>
         </div>
       </motion.div>
     
