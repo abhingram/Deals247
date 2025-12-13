@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import DealCard from '@/components/DealCard';
+import DealModal from '@/components/DealModal';
 import FilterSidebar from '@/components/FilterSidebar';
 import { SlidersHorizontal, List, Grid3X3, Star, Clock, CheckCircle, AlertTriangle, Shield } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -14,6 +15,8 @@ const DealsGrid = ({ searchQuery, selectedCategory, filterType }) => {
   const [total, setTotal] = useState(0);
   const [offset, setOffset] = useState(0);
   const [filters, setFilters] = useState({});
+  const [selectedDeal, setSelectedDeal] = useState(null);
+  const [modalOpen, setModalOpen] = useState(false);
   const [viewMode, setViewMode] = useState(() => {
     // Load view preference from localStorage
     return localStorage.getItem('dealsViewMode') || 'card';
@@ -144,6 +147,11 @@ const DealsGrid = ({ searchQuery, selectedCategory, filterType }) => {
     setOffset(prev => prev + limit);
   };
 
+  const handleDealClick = (deal) => {
+    setSelectedDeal(deal);
+    setModalOpen(true);
+  };
+
   const renderDealListView = () => (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
       {deals.map((deal, index) => (
@@ -153,7 +161,7 @@ const DealsGrid = ({ searchQuery, selectedCategory, filterType }) => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: index * 0.05 }}
           className="bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow cursor-pointer"
-          onClick={() => {/* Handle deal click */}}
+          onClick={() => handleDealClick(deal)}
         >
           <div className="p-4">
             {/* Row 1: Deal Title - Full Width */}
@@ -381,6 +389,15 @@ const DealsGrid = ({ searchQuery, selectedCategory, filterType }) => {
           </div>
         </div>
       </div>
+
+      {/* Deal Modal for List View */}
+      {selectedDeal && (
+        <DealModal
+          deal={selectedDeal}
+          open={modalOpen}
+          onOpenChange={setModalOpen}
+        />
+      )}
     </section>
   );
 };
