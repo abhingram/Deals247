@@ -27,7 +27,7 @@ sudo apt install -y nodejs
 
 # Install required packages
 echo "Installing required packages..."
-sudo apt install -y nginx git build-essential
+    sudo apt install -y nginx git build-essential
 
 # Install PM2 globally
 echo "Installing PM2..."
@@ -216,7 +216,7 @@ echo ""
 echo "🔐 Step 9: Setup SSL Certificate"
 echo "================================"
 sudo apt install -y certbot python3-certbot-nginx
-sudo certbot --nginx -d deals247.online -d www.deals247.online --non-interactive --agree-tos --email admin@deals247.online
+sudo certbot --nginx -d deals247.online -d www.deals247.online --non-interactive --agree-tos --email D247Online@outlook.com
 
 echo "✅ Step 9 Complete - SSL configured"
 echo ""

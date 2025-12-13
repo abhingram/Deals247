@@ -15,6 +15,7 @@ import searchRoutes from './routes/search.js';
 import affiliateRoutes from './routes/affiliate.js';
 import bulkRoutes from './routes/bulk.js';
 import trustRoutes from './routes/trust.js';
+import contactRoutes from './routes/contact.js';
 import { startNotificationScheduler } from './services/notificationScheduler.js';
 
 // Load environment variables
@@ -43,6 +44,7 @@ app.use('/api/search', searchRoutes);
 app.use('/api/affiliate', affiliateRoutes);
 app.use('/api/bulk', bulkRoutes);
 app.use('/api/trust', trustRoutes);
+app.use('/api/contact', contactRoutes);
 
 // Short URL redirects
 app.use('/s', shortenerRoutes);

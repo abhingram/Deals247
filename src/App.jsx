@@ -6,6 +6,7 @@ import { NotificationProvider } from '@/contexts/NotificationContext';
 import { MobileNavigation } from '@/components/MobileUI';
 import { PWAInstallPrompt, OfflineIndicator, PWAUpdatePrompt } from '@/components/PWAComponents';
 import { usePerformanceMonitor } from '@/hooks/usePerformance.jsx';
+import BackToTop from '@/components/BackToTop';
 
 // Lazy load components for better performance
 const Home = React.lazy(() => import('@/pages/Home'));
@@ -19,6 +20,13 @@ const RecommendationsPage = React.lazy(() => import('@/pages/RecommendationsPage
 const HotPage = React.lazy(() => import('@/pages/HotPage'));
 const PopularPage = React.lazy(() => import('@/pages/PopularPage'));
 const TalkingPage = React.lazy(() => import('@/pages/TalkingPage'));
+
+// Legal and informational pages
+const PrivacyPolicy = React.lazy(() => import('@/pages/PrivacyPolicy'));
+const TermsOfService = React.lazy(() => import('@/pages/TermsOfService'));
+const CookiePolicy = React.lazy(() => import('@/pages/CookiePolicy'));
+const AboutUs = React.lazy(() => import('@/pages/AboutUs'));
+const ContactUs = React.lazy(() => import('@/pages/ContactUs'));
 
 // Loading component
 const PageLoader = () => (
@@ -75,9 +83,19 @@ function App() {
                 <Route path="/hot" element={<HotPage />} />
                 <Route path="/popular" element={<PopularPage />} />
                 <Route path="/talking" element={<TalkingPage />} />
+                
+                {/* Legal and informational pages */}
+                <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                <Route path="/terms-of-service" element={<TermsOfService />} />
+                <Route path="/cookie-policy" element={<CookiePolicy />} />
+                <Route path="/about" element={<AboutUs />} />
+                <Route path="/contact" element={<ContactUs />} />
               </Routes>
             </Suspense>
             <Toaster />
+            
+            {/* Back to Top button */}
+            <BackToTop />
           </div>
         </Router>
       </NotificationProvider>

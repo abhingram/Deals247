@@ -56,20 +56,20 @@ const Footer = () => {
           <div>
             <span className="font-semibold text-white mb-4 block">Quick Links</span>
             <nav className="flex flex-col gap-2">
-              <a href="#" className="text-sm hover:text-white transition-colors">Browse Deals</a>
-              <a href="#" className="text-sm hover:text-white transition-colors">Popular Stores</a>
-              <a href="#" className="text-sm hover:text-white transition-colors">Categories</a>
-              <a href="#" className="text-sm hover:text-white transition-colors">Submit a Deal</a>
+              <a href="/" className="text-sm hover:text-white transition-colors">Browse Deals</a>
+              <a href="/#popular" className="text-sm hover:text-white transition-colors">Popular Stores</a>
+              <a href="/#categories" className="text-sm hover:text-white transition-colors">Categories</a>
+              <a href="/about" className="text-sm hover:text-white transition-colors">About Us</a>
             </nav>
           </div>
 
           <div>
             <span className="font-semibold text-white mb-4 block">Support</span>
             <nav className="flex flex-col gap-2">
-              <a href="#" className="text-sm hover:text-white transition-colors">Help Center</a>
-              <a href="#" className="text-sm hover:text-white transition-colors">Contact Us</a>
-              <a href="#" className="text-sm hover:text-white transition-colors">FAQs</a>
-              <a href="#" className="text-sm hover:text-white transition-colors">Report a Deal</a>
+              <a href="/contact" className="text-sm hover:text-white transition-colors">Contact Us</a>
+              <a href="/contact#faq" className="text-sm hover:text-white transition-colors">FAQs</a>
+              <a href="/privacy-policy" className="text-sm hover:text-white transition-colors">Privacy Policy</a>
+              <a href="/terms-of-service" className="text-sm hover:text-white transition-colors">Terms of Service</a>
             </nav>
           </div>
 
@@ -101,10 +101,12 @@ const Footer = () => {
             <p className="text-sm text-center md:text-left">
               © 2025 Deals247. All rights reserved.
             </p>
-            <nav className="flex gap-6">
-              <a href="#" className="text-sm hover:text-white transition-colors">Privacy Policy</a>
-              <a href="#" className="text-sm hover:text-white transition-colors">Terms of Service</a>
-              <a href="#" className="text-sm hover:text-white transition-colors">Cookie Policy</a>
+            <nav className="flex flex-wrap justify-center gap-4 md:gap-6">
+              <a href="/privacy-policy" className="text-sm hover:text-white transition-colors">Privacy Policy</a>
+              <a href="/terms-of-service" className="text-sm hover:text-white transition-colors">Terms of Service</a>
+              <a href="/cookie-policy" className="text-sm hover:text-white transition-colors">Cookie Policy</a>
+              <a href="/about" className="text-sm hover:text-white transition-colors">About</a>
+              <a href="/contact" className="text-sm hover:text-white transition-colors">Contact</a>
             </nav>
           </div>
         </div>
