@@ -23,11 +23,8 @@ import contactRoutes from './routes/contact.js';
 import newsletterRoutes from './routes/newsletter.js';
 import cacheRoutes from './routes/cache.js';
 import amazonRoutes from './routes/internal/amazon.js';
-import healthRoutes from './routes/health.js';
 import { startNotificationScheduler } from './services/notificationScheduler.js';
 import { backgroundScheduler } from './services/backgroundScheduler.js';
-import logger from './config/logger.js';
-import { apiLimiter } from './middleware/rateLimiter.js';
 
 // Get current directory for ES modules
 const __filename = fileURLToPath(import.meta.url);
@@ -53,25 +50,6 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Request logging middleware
-app.use((req, res, next) => {
-  const start = Date.now();
-
-  // Log request
-  logger.http(`${req.method} ${req.originalUrl} - IP: ${req.ip}`);
-
-  // Log response
-  res.on('finish', () => {
-    const duration = Date.now() - start;
-    logger.http(`${req.method} ${req.originalUrl} - ${res.statusCode} - ${duration}ms`);
-  });
-
-  next();
-});
-
-// Apply rate limiting to all API routes
-app.use('/api', apiLimiter);
-
 // Routes
 app.use('/api/deals', dealsRoutes);
 app.use('/api/categories', categoriesRoutes);
@@ -93,34 +71,24 @@ app.use('/api/contact', contactRoutes);
 app.use('/api/newsletter', newsletterRoutes);
 app.use('/api/cache', cacheRoutes);
 app.use('/api/internal/amazon', amazonRoutes);
-app.use('/api', healthRoutes);
 
 // Short URL redirects
 app.use('/s', shortenerRoutes);
 
+// Health check
+app.get('/api/health', (req, res) => {
+  res.json({ status: 'ok', message: 'Deals247 API is running' });
+});
+
 // Error handling middleware
 app.use((err, req, res, next) => {
-  logger.error(`Error ${err.status || 500} - ${err.message} - ${req.originalUrl} - ${req.method} - ${req.ip}`, {
-    stack: err.stack,
-    body: req.body,
-    query: req.query,
-    params: req.params
-  });
-
-  res.status(err.status || 500).json({
-    error: 'Something went wrong!',
-    message: process.env.NODE_ENV === 'development' ? err.message : 'Internal server error'
-  });
+  console.error(err.stack);
+  res.status(500).json({ error: 'Something went wrong!' });
 });
 
 app.listen(PORT, () => {
   console.log(`🚀 Server is running on http://localhost:${PORT}`);
 
   // Start comprehensive background scheduler for Phase 4 features
-  try {
-    backgroundScheduler.start();
-  } catch (error) {
-    console.error('❌ Failed to start background scheduler:', error.message);
-    console.log('💡 Server will continue without background jobs');
-  }
+  backgroundScheduler.start();
 });

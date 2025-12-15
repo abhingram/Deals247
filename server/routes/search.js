@@ -1,12 +1,8 @@
 import express from 'express';
 import db from '../database/connection.js';
 import { authenticateToken } from '../middleware/auth.js';
-import { searchLimiter } from '../middleware/rateLimiter.js';
 
 const router = express.Router();
-
-// Apply search rate limiting to all search routes
-router.use(searchLimiter);
 
 // Helper function to execute database queries with retry logic
 const executeQueryWithRetry = async (query, params, retries = 2) => {
