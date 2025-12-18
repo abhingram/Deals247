@@ -74,7 +74,7 @@ if [ -d "deals247" ]; then
     sudo rm -rf deals247
 fi
 
-sudo git clone https://github.com/abhingram/deals247online.git deals247
+sudo git clone https://github.com/abhingram/Deals247.git deals247
 sudo chown -R $USER:$USER /var/www/deals247
 cd /var/www/deals247
 

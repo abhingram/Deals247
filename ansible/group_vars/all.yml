@@ -1,6 +1,6 @@
 # Variables to be overwritten or stored in Ansible Vault for secrets
 use_docker: true
-repo_url: 'https://github.com/abhingram/deals247.git'
+repo_url: 'https://github.com/abhingram/Deals247.git'
 app_dir: '/var/www/deals247'
 node_version: '20'
 
